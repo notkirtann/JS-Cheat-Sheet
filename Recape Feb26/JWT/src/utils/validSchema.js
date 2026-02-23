@@ -14,7 +14,7 @@ const userValidatioSchema = Joi.object({
     email : requiredString.email(),
     password : Joi.string().required().min(8).max(32),
     address : addressSchema,
-    phone : Joi.string().trim().pattern(/^[0-9]{10}$/).required()
+    phoneNumber : Joi.string().trim().pattern(/^[0-9]{10}$/).required()
 })
 
 const taskValidationSchema = Joi.object({
@@ -32,8 +32,8 @@ const taskValidationSchema = Joi.object({
 });
 
 const passwordValidationSchema = Joi.object({
-    user : userValidatioSchema.email,
-    password : userValidatioSchema.password
+    email: Joi.string().trim().required().email(),
+    password: Joi.string().required().min(8).max(32)
 })
 
 export {userValidatioSchema, taskValidationSchema,passwordValidationSchema}
