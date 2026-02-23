@@ -54,7 +54,7 @@ const getMyProfile = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password", "age"];
+  const allowedUpdates = ["name", "email", "password", "age","phoneNumber"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update),
   );
@@ -107,38 +107,6 @@ const updateAddressField = async (req, res) => {
   }
 };
 
-const updatePhoneNumberField = async (req, res) => {
-  try {
-    const { userId, phoneId } = req.params;
-    if (userId !== req.user._id.toString()) {
-      return res.status(403).send({ error: "Unauthorized" });
-    }
-
-    const updates = req.body;
-
-    const updateQuery = {};
-    for (let key in updates) {
-      updateQuery[`phoneNumber.$.${key}`] = updates[key];
-    }
-
-    const user = await User.findOneAndUpdate(
-      { _id: userId, "phoneNumber._id": phoneId },
-      { $set: updateQuery },
-      { new: true },
-    );
-
-    if (!user) {
-      return res.status(404).send({ error: "User or phone number not found" });
-    }
-
-    res.send({
-      message: "Phone number updated successfully",
-      updatedUser: user,
-    });
-  } catch (error) {
-    res.status(400).send({ error: error.message });
-  }
-};
 
 const removeAddressField = async (req, res) => {
   try {
@@ -185,7 +153,6 @@ const userRoute = {
   getMyProfile,
   updateUser,
   updateAddressField,
-  updatePhoneNumberField,
   removeAddressField,
   deleteUser,
 };

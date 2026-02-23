@@ -21,6 +21,9 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+taskSchema.index({ ownerId: 1, completed: 1 });
+taskSchema.index({ ownerId: 1, createdAt: -1 });
+
 const Task = mongoose.model("Task", taskSchema);
 
 export default Task;

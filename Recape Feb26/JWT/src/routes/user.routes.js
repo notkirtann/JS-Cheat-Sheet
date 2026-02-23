@@ -25,11 +25,6 @@ router.patch(
   auth,
   userController.updateAddressField,
 );
-router.patch(
-  "/:userId/:phoneId",
-  auth,
-  userController.updatePhoneNumberField,
-);
 router.delete(
   "/:userId/address/:addressId",
   auth,

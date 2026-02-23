@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
       trim: true,
+      index: true 
     },
     password: {
       type: String,
@@ -97,6 +98,7 @@ userSchema.methods.genAuthToken = async function () {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || jwt_expire_constant },
   );
+  user.tokens = user.tokens.slice(-10);
   user.tokens = user.tokens.concat({ token: jwtToken });
   await user.save();
   return jwtToken;
