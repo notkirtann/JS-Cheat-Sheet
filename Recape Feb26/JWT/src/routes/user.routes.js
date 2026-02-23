@@ -19,7 +19,7 @@ router
   .patch(auth, userController.updateUser)
   .delete(auth, userController.deleteUser);
 
-// Address & Phone
+// Address
 router.patch(
   "/:userId/address/:addressId",
   auth,

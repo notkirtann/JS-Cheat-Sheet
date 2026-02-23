@@ -98,8 +98,7 @@ userSchema.methods.genAuthToken = async function () {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || jwt_expire_constant },
   );
-  user.tokens = user.tokens.slice(-10);
-  user.tokens = user.tokens.concat({ token: jwtToken });
+  user.tokens = user.tokens.concat({ token: jwtToken }).slice(-10);
   await user.save();
   return jwtToken;
 };
@@ -110,7 +109,7 @@ userSchema.pre("save", async function (next) {
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, bcrypt_constant);
   }
-  next();
+  // next();
 });
 
 const User = mongoose.model("User", userSchema);
