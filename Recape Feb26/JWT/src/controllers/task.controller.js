@@ -1,3 +1,4 @@
+import { limit_constant, skip_constant } from "../constant.js";
 import Task from "../models/task.js";
 
 const createTask = async (req, res) => {
@@ -21,8 +22,8 @@ const getAllTasks = async (req, res) => {
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
   }
-  const limit = parseInt(req.query.limit) || 5;
-  const skip = parseInt(req.query.skip) || 0;
+  const limit = parseInt(req.query.limit) || limit_constant;
+  const skip = parseInt(req.query.skip) || skip_constant;
   const sort = {};
 
   if (req.query.sortBy) {

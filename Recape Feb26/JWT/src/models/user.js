@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {bcrypt_constant, jwt_expire_constant} from "../constant.js"
 
 const userSchema = new mongoose.Schema(
   {
@@ -94,7 +95,7 @@ userSchema.methods.genAuthToken = async function () {
   const jwtToken = jwt.sign(
     { _id: user._id.toString(), email: user.email },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || "1h" },
+    { expiresIn: process.env.JWT_EXPIRES_IN || jwt_expire_constant },
   );
   user.tokens = user.tokens.concat({ token: jwtToken });
   await user.save();
@@ -105,7 +106,7 @@ userSchema.methods.genAuthToken = async function () {
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+    user.password = await bcrypt.hash(user.password, bcrypt_constant);
   }
   next();
 });

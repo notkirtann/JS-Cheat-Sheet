@@ -8,7 +8,7 @@ const addressSchema = Joi.object({
     pincode: Joi.number().integer().required().min(100000).max(999999)
 })
 
-const userVaidatioSchema = Joi.object({
+const userValidatioSchema = Joi.object({
     name: requiredString,
     age: Joi.number().default(18).min(18).max(60),
     email : requiredString.email(),
@@ -28,14 +28,12 @@ const taskValidationSchema = Joi.object({
         }),
 
     completed: Joi.boolean()
-        .default(false),
-
-    ownerId: Joi.string()
-        .regex(/^[0-9a-fA-F]{24}$/)
-        .required()
-        .messages({
-            'string.pattern.base': 'ownerId must be a valid MongoDB ObjectId'
-        })
+        .default(false)
 });
 
-export {userVaidatioSchema, taskValidationSchema}
+const passwordValidationSchema = Joi.object({
+    user : userValidatioSchema.email,
+    password : userValidatioSchema.password
+})
+
+export {userValidatioSchema, taskValidationSchema,passwordValidationSchema}
