@@ -3,7 +3,7 @@ import express from "express";
 import connectDB from "./db/connection.js";
 import chalk from "chalk";
 import cors from "cors";
-import jwtAPI from './routes/index.js'
+import jwtAPI from "./routes/index.js";
 
 const app = express();
 const PORT =
@@ -30,9 +30,5 @@ connectDB()
     console.log(`There is and error connecting PORT`, error);
   })
   .finally(() => {
-    console.log(
-      chalk.black.bgWhite.blue(
-        `Both Database  𖥕  PORT connected`,
-      ),
-    );
+    console.log(chalk.black.bgWhite.blue(`Both Database  𖥕  PORT connected`));
   });

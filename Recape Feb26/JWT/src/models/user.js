@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import {bcrypt_constant, jwt_expire_constant} from "../constant.js"
+import { bcrypt_constant, jwt_expire_constant } from "../constant.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
       trim: true,
-      index: true 
+      index: true,
     },
     password: {
       type: String,

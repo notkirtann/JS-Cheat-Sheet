@@ -54,7 +54,7 @@ const getMyProfile = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password", "age","phoneNumber"];
+  const allowedUpdates = ["name", "email", "password", "age", "phoneNumber"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update),
   );
@@ -91,7 +91,7 @@ const updateAddressField = async (req, res) => {
     const user = await User.findOneAndUpdate(
       { _id: userId, "address._id": addressId },
       { $set: updateQuery },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!user) {
@@ -107,7 +107,6 @@ const updateAddressField = async (req, res) => {
   }
 };
 
-
 const removeAddressField = async (req, res) => {
   try {
     const { userId, addressId } = req.params;
@@ -118,7 +117,7 @@ const removeAddressField = async (req, res) => {
 
     const user = await User.findByIdAndUpdate(
       userId,
-      { $pull: { address: { _id: addressId } } }, 
+      { $pull: { address: { _id: addressId } } },
       { new: true },
     );
 

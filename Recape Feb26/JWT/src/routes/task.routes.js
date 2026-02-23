@@ -2,13 +2,13 @@ import express from "express";
 import auth from "../middleware/auth.js";
 import taskRoute from "../controllers/task.controller.js";
 import { validate } from "../middleware/validate.js";
-import { taskValidationSchema} from "../utils/validSchema.js";
+import { taskValidationSchema } from "../utils/validSchema.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .post(auth,validate(taskValidationSchema), taskRoute.createTask)
+  .post(auth, validate(taskValidationSchema), taskRoute.createTask)
   .get(auth, taskRoute.getAllTasks);
 
 router
