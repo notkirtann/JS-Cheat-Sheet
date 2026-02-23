@@ -13,7 +13,7 @@ const userValidatioSchema = Joi.object({
     age: Joi.number().default(18).min(18).max(60),
     email : requiredString.email(),
     password : Joi.string().required().min(8).max(32),
-    address : addressSchema,
+    address: Joi.array().items(addressSchema).min(1).required(),
     phoneNumber : Joi.string().trim().pattern(/^[0-9]{10}$/).required()
 })
 

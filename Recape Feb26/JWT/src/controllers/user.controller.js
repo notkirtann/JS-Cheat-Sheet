@@ -4,8 +4,8 @@ import Task from "../models/task.js";
 const createUser = async (req, res) => {
   try {
     const user = new User(req.body);
-    const token = await user.genAuthToken();
     await user.save();
+    const token = await user.genAuthToken();
 
     res.status(201).send({ user, token });
   } catch (error) {
