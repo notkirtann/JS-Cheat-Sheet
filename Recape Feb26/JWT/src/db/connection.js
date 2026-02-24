@@ -11,8 +11,8 @@ const connectDB = async () => {
     console.log(
       chalk
         .bgHex("#FF671F")
-        .blue(
-          `MongoDB Connected: ${connectionInstance.connection.host}/${dbName} `,
+        .black(
+          `MongoDB Connected: ${connectionInstance.connection.host}/${dbName}`,
         ),
     );
   } catch (error) {
