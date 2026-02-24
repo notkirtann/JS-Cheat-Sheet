@@ -20,15 +20,28 @@ app.use(
 
 app.use("/api", jwtAPI);
 
+// connectDB()
+//   .then(() => {
+//     app.listen(PORT, () => {
+//       console.log(chalk.bgGreen.black(`Server  is running on PORT ${PORT} `));
+//     });
+//   })
+//   .catch((error) => {
+//     console.log(`There is and error connecting PORT`, error);
+//   })
+//   .finally(() => {
+//     console.log(chalk.black.bgWhite.blue(`Both Database  𖥕  PORT connected`));
+//   });
+
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(chalk.bgGreen.black(`Server  is running on PORT ${PORT} `));
+      console.log(chalk.bgBlue.black(` Server  is running on PORT ${PORT} `));
     });
   })
   .catch((error) => {
     console.log(`There is and error connecting PORT`, error);
   })
   .finally(() => {
-    console.log(chalk.black.bgWhite.blue(`Both Database  𖥕  PORT connected`));
+    console.log(chalk.bgWhite.blue(`Both Database and  PORT connected`));
   });
