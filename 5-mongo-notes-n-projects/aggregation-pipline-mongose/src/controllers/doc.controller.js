@@ -18,7 +18,6 @@ export const getDocument = async (req,res) => {
   }
 }
 
-
 export const getDocumentById = async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id);

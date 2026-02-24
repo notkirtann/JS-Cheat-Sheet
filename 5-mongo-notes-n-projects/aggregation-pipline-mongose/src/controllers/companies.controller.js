@@ -1,4 +1,4 @@
-import Company from '../models/companies.model.js';
+import Company from "../models/companies.model.js";
 
 export const createCompany = async (req, res) => {
   try {
@@ -19,11 +19,13 @@ export const getCompanies = async (req, res) => {
 };
 
 export const getCompanyById = async (req, res) => {
-    const id = req.params.id
+  const id = req.params.id;
   try {
     const company = await Company.findById(req.params.id);
     if (!company) {
-      return res.status(404).json({ success: false, message: "Company not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Company not found" });
     }
     res.json({ success: true, data: company });
   } catch (error) {
@@ -33,14 +35,15 @@ export const getCompanyById = async (req, res) => {
 
 export const updateCompany = async (req, res) => {
   try {
-    const company = await Company.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const company = await Company.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!company) {
-      return res.status(404).json({ success: false, message: "company not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "company not found" });
     }
 
     res.json({ success: true, data: company });
@@ -48,4 +51,3 @@ export const updateCompany = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-

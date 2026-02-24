@@ -1,7 +1,3 @@
-const dbName = 'shop';
+const dbName = "shop";
 
-
-
-export {
-    dbName
-}
+export { dbName };

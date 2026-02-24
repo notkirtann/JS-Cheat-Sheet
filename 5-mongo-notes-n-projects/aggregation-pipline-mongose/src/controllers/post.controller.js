@@ -22,7 +22,9 @@ export const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) {
-      return res.status(404).json({ success: false, message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
     }
     res.json({ success: true, data: post });
   } catch (error) {
@@ -32,14 +34,15 @@ export const getPostById = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!post) {
-      return res.status(404).json({ success: false, message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
     }
 
     res.json({ success: true, data: post });
@@ -53,7 +56,9 @@ export const deletePost = async (req, res) => {
     const post = await Post.findByIdAndDelete(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ success: false, message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
     }
 
     res.json({ success: true, message: "Post deleted" });

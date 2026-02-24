@@ -22,7 +22,9 @@ export const getOrderById = async (req, res) => {
   try {
     const order = await Sales.findById(req.params.id);
     if (!order) {
-      return res.status(404).json({ success: false, message: "Sales not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Sales not found" });
     }
     res.json({ success: true, data: order });
   } catch (error) {
@@ -32,14 +34,15 @@ export const getOrderById = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
-    const order = await Sales.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const order = await Sales.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!order) {
-      return res.status(404).json({ success: false, message: "Sales not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Sales not found" });
     }
 
     res.json({ success: true, data: order });
@@ -53,7 +56,9 @@ export const deleteOrder = async (req, res) => {
     const order = await Sales.findByIdAndDelete(req.params.id);
 
     if (!order) {
-      return res.status(404).json({ success: false, message: "Sales not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Sales not found" });
     }
 
     res.json({ success: true, message: "Sales deleted" });
@@ -67,15 +72,15 @@ export const getTotalRevenue = async (req, res) => {
     const result = await Sales.aggregate([
       {
         $project: {
-          orderTotal: { $multiply: ["$quantity", "$price"] }
-        }
+          orderTotal: { $multiply: ["$quantity", "$price"] },
+        },
       },
       {
         $group: {
           _id: null,
-          totalRevenue: { $sum: "$orderTotal" }
-        }
-      }
+          totalRevenue: { $sum: "$orderTotal" },
+        },
+      },
     ]);
 
     res.json({ success: true, data: result[0] ?? { totalRevenue: 0 } });
@@ -94,20 +99,17 @@ export const getProfitAnalysis = async (req, res) => {
           targetPrice: 1,
           profitPerUnit: { $subtract: ["$targetPrice", "$price"] },
           totalProfit: {
-            $multiply: [
-              { $subtract: ["$targetPrice", "$price"] },
-              "$quantity"
-            ]
-          }
-        }
+            $multiply: [{ $subtract: ["$targetPrice", "$price"] }, "$quantity"],
+          },
+        },
       },
       {
         $group: {
           _id: null,
           totalProfit: { $sum: "$totalProfit" },
-          avgProfitPerUnit: { $avg: "$profitPerUnit" }
-        }
-      }
+          avgProfitPerUnit: { $avg: "$profitPerUnit" },
+        },
+      },
     ]);
 
     res.json({ success: true, data: result[0] });
@@ -121,15 +123,15 @@ export const getBelowTargetOrders = async (req, res) => {
     const result = await Sales.aggregate([
       {
         $match: {
-          $expr: { $lt: ["$price", "$targetPrice"] }
-        }
-      }
+          $expr: { $lt: ["$price", "$targetPrice"] },
+        },
+      },
     ]);
 
     res.json({
       success: true,
       count: result.length,
-      data: result
+      data: result,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -145,9 +147,9 @@ export const getQuantityStats = async (req, res) => {
           totalQuantity: { $sum: "$quantity" },
           avgQuantity: { $avg: "$quantity" },
           maxQuantity: { $max: "$quantity" },
-          minQuantity: { $min: "$quantity" }
-        }
-      }
+          minQuantity: { $min: "$quantity" },
+        },
+      },
     ]);
 
     res.json({ success: true, data: result[0] });

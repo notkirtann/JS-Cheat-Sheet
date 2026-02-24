@@ -12,7 +12,6 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    
     let { page = 1, limit = 100, sort = "asc" } = req.query;
 
     page = Number(page);
@@ -42,13 +41,12 @@ export const getProducts = async (req, res) => {
       page,
       limit,
       totalPages: Math.ceil(totalProducts / limit),
-      data: products
+      data: products,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -102,7 +100,9 @@ export const getProductsPriceGreater = async (req, res) => {
       },
     ]);
 
-    res.status(200).json({success: true, count: products.length, data: products});
+    res
+      .status(200)
+      .json({ success: true, count: products.length, data: products });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -113,14 +113,16 @@ export const getProductsByCompany = async (req, res) => {
     const { companyId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
-      return res.status(400).json({ success: false, message: "Invalid company id" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid company id" });
     }
 
     const products = await Product.aggregate([
       {
         $match: {
-          company: new mongoose.Types.ObjectId(companyId)
-        }
+          company: new mongoose.Types.ObjectId(companyId),
+        },
       },
       {
         $group: {
@@ -131,15 +133,14 @@ export const getProductsByCompany = async (req, res) => {
             $push: {
               name: "$name",
               price: "$price",
-              isFeature: "$isFeature"
-            }
-          }
-        }
-      }
+              isFeature: "$isFeature",
+            },
+          },
+        },
+      },
     ]);
 
     res.status(200).json({ success: true, data: products });
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -155,17 +156,16 @@ export const getProductsByFeatureStatus = async (req, res) => {
         $project: {
           name: 1,
           price: 1,
-          image: 1
-        }
-      }
+          image: 1,
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
       count: products.length,
-      data: products
+      data: products,
     });
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -185,18 +185,18 @@ export const groupProductsByCategory = async (req, res) => {
             $push: {
               name: "$name",
               price: "$price",
-              isFeature: "$isFeature"
-            }
-          }
-        }
+              isFeature: "$isFeature",
+            },
+          },
+        },
       },
       {
         $lookup: {
           from: "categories",
           localField: "_id",
           foreignField: "_id",
-          as: "category"
-        }
+          as: "category",
+        },
       },
       { $unwind: "$category" },
       {
@@ -208,16 +208,15 @@ export const groupProductsByCategory = async (req, res) => {
           avgPrice: { $round: ["$avgPrice", 2] },
           minPrice: 1,
           maxPrice: 1,
-          products: 1
-        }
-      }
+          products: 1,
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
-      data: result
+      data: result,
     });
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -230,16 +229,15 @@ export const priceComparisonByCategory = async (req, res) => {
         $group: {
           _id: "$category",
           highestPrice: { $max: "$price" },
-          lowestPrice: { $min: "$price" }
-        }
-      }
+          lowestPrice: { $min: "$price" },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
-      data: result
+      data: result,
     });
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

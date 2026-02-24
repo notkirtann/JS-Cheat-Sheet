@@ -1,4 +1,4 @@
-import Category from '../models/category.model.js';
+import Category from "../models/category.model.js";
 
 export const createCategory = async (req, res) => {
   try {
@@ -19,11 +19,13 @@ export const getCategory = async (req, res) => {
 };
 
 export const getCategoryById = async (req, res) => {
-    const id = req.params.id
+  const id = req.params.id;
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
-      return res.status(404).json({ success: false, message: "category not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "category not found" });
     }
     res.json({ success: true, data: category });
   } catch (error) {
@@ -33,14 +35,15 @@ export const getCategoryById = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!category) {
-      return res.status(404).json({ success: false, message: "category not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "category not found" });
     }
 
     res.json({ success: true, data: category });
@@ -48,4 +51,3 @@ export const updateCategory = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
