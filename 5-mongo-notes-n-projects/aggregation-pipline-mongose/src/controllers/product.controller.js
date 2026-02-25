@@ -68,7 +68,7 @@ export const getProductById = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const products = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 
@@ -148,24 +148,37 @@ export const getProductsByCompany = async (req, res) => {
 
 export const getProductsByFeatureStatus = async (req, res) => {
   try {
-    const isFeature = req.query.isFeature === "true";
+    const isFeature = req.query.isFeature === "true" ? true : false;
 
     const products = await Product.aggregate([
       { $match: { isFeature } },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "company",
+          foreignField: "_id",
+          as: "companyDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$companyDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           name: 1,
           price: 1,
           image: 1,
+          companyName: "$companyDetails.name",
         },
       },
     ]);
 
-    res.status(200).json({
-      success: true,
-      count: products.length,
-      data: products,
-    });
+    res
+      .status(200)
+      .json({ success: true, counts: products.length, data: products });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

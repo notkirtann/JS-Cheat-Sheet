@@ -118,7 +118,7 @@ const removeAddressField = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userId,
       { $pull: { address: { _id: addressId } } },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!user) {
