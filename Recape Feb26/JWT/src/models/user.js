@@ -49,9 +49,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    tokens: [
-      {
-        token: {
+    // tokens:{
+    //   type: String,        //for single type login 
+    //       required: true,
+    // },
+    tokens: [{
+      token:  {
           type: String,
           required: true,
         },
@@ -99,6 +102,8 @@ userSchema.methods.genAuthToken = async function () {
     { expiresIn: process.env.JWT_EXPIRES_IN || jwt_expire_constant },
   );
   user.tokens = user.tokens.concat({ token: jwtToken }).slice(-10);
+  // user.tokens = [{ token: jwtToken }];
+  // user.tokens = jwtToken
   await user.save();
   return jwtToken;
 };
