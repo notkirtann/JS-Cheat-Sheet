@@ -35,7 +35,6 @@ console.log('Hello Node');
 //callback helped
 
 //another example
-
 function sum(v1,v2,callback){
     setTimeout(()=>{
         callback(v1+v2)
